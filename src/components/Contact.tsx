@@ -8,14 +8,44 @@ export default function Contact() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setBtnText('Message Sent!');
-    setBtnStyle({ background: 'linear-gradient(135deg, #10b981, #059669)' });
     
-    setTimeout(() => {
-      (e.target as HTMLFormElement).reset();
-      setBtnText('Send Message');
-      setBtnStyle({});
-    }, 3000);
+    // Get form data object
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    setBtnText('Sending...');
+    
+    // Ajax submit to FormSubmit.co static endpoint
+    fetch("https://formsubmit.co/ajax/steven.leunk@hotmail.com", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify(data)
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('Form submission failed');
+        return response.json();
+    })
+    .then(() => {
+        setBtnText('Message Sent!');
+        setBtnStyle({ background: 'linear-gradient(135deg, #10b981, #059669)' });
+        
+        setTimeout(() => {
+          form.reset();
+          setBtnText('Send Message');
+          setBtnStyle({});
+        }, 3000);
+    })
+    .catch(error => {
+        console.error('Error submitting form:', error);
+        setBtnText('Error Sending!');
+        setBtnStyle({ background: 'linear-gradient(135deg, #ef4444, #dc2626)' });
+        
+        setTimeout(() => {
+          setBtnText('Send Message');
+          setBtnStyle({});
+        }, 3000);
+    });
   };
 
   return (
@@ -58,6 +88,7 @@ export default function Contact() {
             id="contactForm"
             onSubmit={handleSubmit}
           >
+            <input type="hidden" name="_captcha" value="false" />
             <div className="form-group">
               <label htmlFor="name">Name</label>
               <input type="text" id="name" name="name" required placeholder="John Doe" />
