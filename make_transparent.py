@@ -17,7 +17,7 @@ pixels = img.getdata()
 new_pixels = []
 
 # Chroma key threshold for pure black background
-threshold = 30 # Slightly safety bump for anti-aliasing edges
+threshold = 60 # Safety bump for anti-aliasing edges
 
 for p in pixels:
     r, g, b, a = p
