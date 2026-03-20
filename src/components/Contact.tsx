@@ -16,8 +16,8 @@ export default function Contact() {
 
     setBtnText('Sending...');
     
-    // Ajax submit to FormSubmit.co static endpoint
-    fetch("https://formsubmit.co/ajax/steven.leunk@hotmail.com", {
+    // Ajax submit to FormSubmit.co static endpoint (Secure Alias)
+    fetch("https://formsubmit.co/ajax/a5d4d9410d850e9ef5da805effd9cd42", {
         method: "POST",
         headers: { "Content-Type": "application/json", "Accept": "application/json" },
         body: JSON.stringify(data)
